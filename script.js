@@ -1,340 +1,344 @@
 /* =====================================================
    RAKSHA BANDHAN WEBSITE
-   FINAL JAVASCRIPT
+   FINAL WORKING SCRIPT
 ===================================================== */
 
 
-/* =====================================================
-   ELEMENTS
-===================================================== */
-
-const startButton =
-    document.getElementById(
-        "startButton"
-    );
+document.addEventListener("DOMContentLoaded", function () {
 
 
-const tieRakhiButton =
-    document.getElementById(
-        "tieRakhiButton"
-    );
+    /* =================================================
+       GET ELEMENTS
+    ================================================= */
 
+    const startButton =
+        document.getElementById("startButton");
 
-const rakhi =
-    document.getElementById(
-        "rakhi"
-    );
+    const tieRakhiButton =
+        document.getElementById("tieRakhiButton");
 
+    const rakhi =
+        document.getElementById("rakhi");
 
-const photoButton =
-    document.getElementById(
-        "photoButton"
-    );
+    const finalPhoto =
+        document.getElementById("finalPhoto");
 
+    const messageScreen =
+        document.getElementById("messageScreen");
 
-const backgroundMusic =
-    document.getElementById(
-        "backgroundMusic"
-    );
+    const photoScreen =
+        document.getElementById("photoScreen");
 
 
 
-/* =====================================================
-   CHANGE SCREEN
-===================================================== */
+    /* =================================================
+       SHOW SCREEN
+    ================================================= */
 
-function showScreen(screenId) {
+    function showScreen(screenId) {
 
-    document
-        .querySelectorAll(".screen")
-        .forEach(
-            screen => {
+        const screens =
+            document.querySelectorAll(".screen");
 
-                screen.classList.remove(
-                    "active"
+
+        screens.forEach(function (screen) {
+
+            screen.classList.remove("active");
+
+        });
+
+
+        const selectedScreen =
+            document.getElementById(screenId);
+
+
+        if (selectedScreen) {
+
+            selectedScreen.classList.add("active");
+
+        }
+
+    }
+
+
+
+    /* =================================================
+       CONFETTI
+    ================================================= */
+
+    function createConfetti() {
+
+        const container =
+            document.getElementById(
+                "confettiContainer"
+            );
+
+
+        if (!container) {
+            return;
+        }
+
+
+        const colors = [
+            "#d71958",
+            "#f5a623",
+            "#ffd45a",
+            "#e87596",
+            "#c44c75",
+            "#f4c2d0"
+        ];
+
+
+        for (let i = 0; i < 80; i++) {
+
+
+            const piece =
+                document.createElement("div");
+
+
+            piece.className =
+                "confetti";
+
+
+            piece.style.left =
+                Math.random() * 100 + "%";
+
+
+            piece.style.background =
+                colors[
+                    Math.floor(
+                        Math.random() *
+                        colors.length
+                    )
+                ];
+
+
+            piece.style.animationDelay =
+                Math.random() * 1.5 + "s";
+
+
+            piece.style.width =
+                6 + Math.random() * 8 + "px";
+
+
+            piece.style.height =
+                8 + Math.random() * 10 + "px";
+
+
+            piece.style.borderRadius =
+                Math.random() > 0.5
+                    ? "50%"
+                    : "2px";
+
+
+            container.appendChild(piece);
+
+
+            setTimeout(function () {
+
+                piece.remove();
+
+            }, 4500);
+
+        }
+
+    }
+
+
+
+    /* =================================================
+       PRELOAD PHOTO
+    ================================================= */
+
+    if (finalPhoto) {
+
+        const preload =
+            new Image();
+
+
+        preload.src =
+            "./images/raksha-photo.jpg";
+
+    }
+
+
+
+    /* =================================================
+       SCREEN 1
+       BEGIN CELEBRATION
+    ================================================= */
+
+    if (startButton) {
+
+        startButton.addEventListener(
+            "click",
+            function () {
+
+
+                showScreen(
+                    "rakhiScreen"
                 );
+
+
+                createConfetti();
+
 
             }
         );
 
-
-    const nextScreen =
-        document.getElementById(
-            screenId
-        );
-
-
-    if (nextScreen) {
-
-        nextScreen.classList.add(
-            "active"
-        );
-
     }
 
-}
+
+
+    /* =================================================
+       SCREEN 2
+       TIE RAKHI
+    ================================================= */
+
+    if (tieRakhiButton) {
+
+        tieRakhiButton.addEventListener(
+            "click",
+            function () {
+
+
+                /* -------------------------------------
+                   Rakhi animation
+                ------------------------------------- */
+
+                if (rakhi) {
+
+                    rakhi.classList.add(
+                        "tied"
+                    );
+
+                }
 
 
 
-/* =====================================================
-   SCREEN 1
-   BEGIN CELEBRATION
-===================================================== */
+                /* -------------------------------------
+                   Disable button
+                ------------------------------------- */
 
-startButton.addEventListener(
-    "click",
-    () => {
-
-
-        showScreen(
-            "rakhiScreen"
-        );
-
-
-        createConfetti();
-
-
-        /*
-           Music will play only if
-           the music file exists.
-        */
-
-        backgroundMusic
-            .play()
-            .catch(
-                () => {}
-            );
-
-    }
-);
+                tieRakhiButton.disabled =
+                    true;
 
 
 
-/* =====================================================
-   SCREEN 2
-   TIE RAKHI
-===================================================== */
-
-tieRakhiButton.addEventListener(
-    "click",
-    () => {
-
-
-        /*
-           Start Rakhi animation
-        */
-
-        rakhi.classList.add(
-            "tied"
-        );
-
-
-        /*
-           Prevent repeated clicks
-        */
-
-        tieRakhiButton.disabled =
-            true;
-
-
-        tieRakhiButton.innerText =
-            "Rakhi Tied ❤️";
-
-
-        /*
-           Celebration effect
-        */
-
-        createConfetti();
-
-
-        /*
-           Move to Manoj message
-           after animation.
-        */
-
-        setTimeout(
-            () => {
-
-                showScreen(
-                    "messageScreen"
-                );
-
-            },
-            1800
-        );
-
-    }
-);
+                tieRakhiButton.innerHTML =
+                    "Rakhi Tied ❤️";
 
 
 
-/* =====================================================
-   SCREEN 3
-   SHOW PHOTO
-===================================================== */
-
-photoButton.addEventListener(
-    "click",
-    () => {
-
-
-        showScreen(
-            "photoScreen"
-        );
-
-
-        /*
-           Small celebration when
-           photo appears.
-        */
-
-        setTimeout(
-            () => {
+                /* -------------------------------------
+                   Celebration
+                ------------------------------------- */
 
                 createConfetti();
 
-            },
-            300
-        );
-
-    }
-);
 
 
+                /* -------------------------------------
+                   Show Manoj message
+                   after Rakhi animation
+                ------------------------------------- */
 
-/* =====================================================
-   CONFETTI FUNCTION
-===================================================== */
-
-function createConfetti() {
-
-
-    const container =
-        document.getElementById(
-            "confettiContainer"
-        );
+                setTimeout(
+                    function () {
 
 
-    const colors = [
-
-        "#d71958",
-
-        "#f5a623",
-
-        "#ffd45a",
-
-        "#e87596",
-
-        "#c44c75",
-
-        "#f4c2d0"
-
-    ];
+                        showScreen(
+                            "messageScreen"
+                        );
 
 
-    /*
-       Create 90 pieces
-    */
 
-    for (
-        let i = 0;
-        i < 90;
-        i++
-    ) {
+                        /* -----------------------------
+                           WAIT 5 SECONDS
+                        ----------------------------- */
+
+                        setTimeout(
+                            function () {
 
 
-        const piece =
-            document.createElement(
-                "div"
-            );
+                                /*
+                                 * Make absolutely sure
+                                 * the image source is set.
+                                 */
+
+                                if (finalPhoto) {
+
+                                    finalPhoto.src =
+                                        "./images/raksha-photo.jpg";
+
+                                }
 
 
-        piece.classList.add(
-            "confetti"
-        );
+
+                                /*
+                                 * SHOW PHOTO SCREEN
+                                 */
+
+                                showScreen(
+                                    "photoScreen"
+                                );
 
 
-        /*
-           Random horizontal position
-        */
 
-        piece.style.left =
-            Math.random() * 100 + "%";
+                                /*
+                                 * Extra confetti
+                                 */
 
-
-        /*
-           Random color
-        */
-
-        piece.style.background =
-            colors[
-                Math.floor(
-                    Math.random() *
-                    colors.length
-                )
-            ];
+                                createConfetti();
 
 
-        /*
-           Random animation delay
-        */
-
-        piece.style.animationDelay =
-            Math.random() * 1.5 + "s";
+                            },
+                            5000
+                        );
 
 
-        /*
-           Random size
-        */
-
-        piece.style.width =
-            (
-                6 +
-                Math.random() * 8
-            ) + "px";
+                    },
+                    1800
+                );
 
 
-        piece.style.height =
-            (
-                8 +
-                Math.random() * 10
-            ) + "px";
-
-
-        /*
-           Random shape
-        */
-
-        piece.style.borderRadius =
-
-            Math.random() > 0.5
-                ? "50%"
-                : "2px";
-
-
-        /*
-           Add to page
-        */
-
-        container.appendChild(
-            piece
-        );
-
-
-        /*
-           Remove after animation
-        */
-
-        setTimeout(
-            () => {
-
-                piece.remove();
-
-            },
-            4500
+            }
         );
 
     }
 
-}
+
+
+    /* =================================================
+       FINAL PHOTO SAFETY
+    ================================================= */
+
+    if (finalPhoto) {
+
+        finalPhoto.src =
+            "./images/raksha-photo.jpg";
+
+
+        finalPhoto.onload =
+            function () {
+
+                console.log(
+                    "Raksha Bandhan photo loaded successfully."
+                );
+
+            };
+
+
+        finalPhoto.onerror =
+            function () {
+
+                console.error(
+                    "Photo not found. Check images/raksha-photo.jpg"
+                );
+
+            };
+
+    }
+
+
+});
