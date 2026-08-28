@@ -1,344 +1,102 @@
-/* =====================================================
-   RAKSHA BANDHAN WEBSITE
-   FINAL WORKING SCRIPT
-===================================================== */
-
-
 document.addEventListener("DOMContentLoaded", function () {
 
+    const startButton = document.getElementById("startButton");
+    const tieRakhiButton = document.getElementById("tieRakhiButton");
 
-    /* =================================================
-       GET ELEMENTS
-    ================================================= */
+    const welcomeScreen = document.getElementById("welcomeScreen");
+    const rakhiScreen = document.getElementById("rakhiScreen");
+    const messageScreen = document.getElementById("messageScreen");
+    const photoScreen = document.getElementById("photoScreen");
 
-    const startButton =
-        document.getElementById("startButton");
-
-    const tieRakhiButton =
-        document.getElementById("tieRakhiButton");
-
-    const rakhi =
-        document.getElementById("rakhi");
-
-    const finalPhoto =
-        document.getElementById("finalPhoto");
-
-    const messageScreen =
-        document.getElementById("messageScreen");
-
-    const photoScreen =
-        document.getElementById("photoScreen");
+    const rakhi = document.getElementById("rakhi");
+    const finalPhoto = document.getElementById("finalPhoto");
 
 
 
-    /* =================================================
-       SHOW SCREEN
-    ================================================= */
+    /* ==========================================
+       CHANGE SCREEN
+    ========================================== */
 
-    function showScreen(screenId) {
+    function changeScreen(screenToShow) {
 
-        const screens =
-            document.querySelectorAll(".screen");
-
-
-        screens.forEach(function (screen) {
-
+        document.querySelectorAll(".screen").forEach(function (screen) {
             screen.classList.remove("active");
-
         });
 
-
-        const selectedScreen =
-            document.getElementById(screenId);
-
-
-        if (selectedScreen) {
-
-            selectedScreen.classList.add("active");
-
-        }
-
+        screenToShow.classList.add("active");
     }
 
 
 
-    /* =================================================
-       CONFETTI
-    ================================================= */
+    /* ==========================================
+       START BUTTON
+    ========================================== */
 
-    function createConfetti() {
+    startButton.addEventListener("click", function () {
 
-        const container =
-            document.getElementById(
-                "confettiContainer"
+        changeScreen(rakhiScreen);
+
+    });
+
+
+
+    /* ==========================================
+       TIE RAKHI BUTTON
+    ========================================== */
+
+    tieRakhiButton.addEventListener("click", function () {
+
+        /* Rakhi animation */
+        if (rakhi) {
+            rakhi.classList.add("tied");
+        }
+
+        tieRakhiButton.disabled = true;
+        tieRakhiButton.innerHTML = "Rakhi Tied ❤️";
+
+
+        /* Show message */
+        changeScreen(messageScreen);
+
+
+        /*
+         * IMPORTANT
+         * After 4 seconds, automatically
+         * move to the PHOTO screen.
+         */
+
+        setTimeout(function () {
+
+            changeScreen(photoScreen);
+
+        }, 4000);
+
+    });
+
+
+
+    /* ==========================================
+       PHOTO
+    ========================================== */
+
+    if (finalPhoto) {
+
+        finalPhoto.src = "./images/raksha-photo.jpg";
+
+        finalPhoto.onload = function () {
+
+            console.log("PHOTO LOADED SUCCESSFULLY");
+
+        };
+
+        finalPhoto.onerror = function () {
+
+            console.error(
+                "PHOTO ERROR: images/raksha-photo.jpg not found"
             );
 
-
-        if (!container) {
-            return;
-        }
-
-
-        const colors = [
-            "#d71958",
-            "#f5a623",
-            "#ffd45a",
-            "#e87596",
-            "#c44c75",
-            "#f4c2d0"
-        ];
-
-
-        for (let i = 0; i < 80; i++) {
-
-
-            const piece =
-                document.createElement("div");
-
-
-            piece.className =
-                "confetti";
-
-
-            piece.style.left =
-                Math.random() * 100 + "%";
-
-
-            piece.style.background =
-                colors[
-                    Math.floor(
-                        Math.random() *
-                        colors.length
-                    )
-                ];
-
-
-            piece.style.animationDelay =
-                Math.random() * 1.5 + "s";
-
-
-            piece.style.width =
-                6 + Math.random() * 8 + "px";
-
-
-            piece.style.height =
-                8 + Math.random() * 10 + "px";
-
-
-            piece.style.borderRadius =
-                Math.random() > 0.5
-                    ? "50%"
-                    : "2px";
-
-
-            container.appendChild(piece);
-
-
-            setTimeout(function () {
-
-                piece.remove();
-
-            }, 4500);
-
-        }
+        };
 
     }
-
-
-
-    /* =================================================
-       PRELOAD PHOTO
-    ================================================= */
-
-    if (finalPhoto) {
-
-        const preload =
-            new Image();
-
-
-        preload.src =
-            "./images/raksha-photo.jpg";
-
-    }
-
-
-
-    /* =================================================
-       SCREEN 1
-       BEGIN CELEBRATION
-    ================================================= */
-
-    if (startButton) {
-
-        startButton.addEventListener(
-            "click",
-            function () {
-
-
-                showScreen(
-                    "rakhiScreen"
-                );
-
-
-                createConfetti();
-
-
-            }
-        );
-
-    }
-
-
-
-    /* =================================================
-       SCREEN 2
-       TIE RAKHI
-    ================================================= */
-
-    if (tieRakhiButton) {
-
-        tieRakhiButton.addEventListener(
-            "click",
-            function () {
-
-
-                /* -------------------------------------
-                   Rakhi animation
-                ------------------------------------- */
-
-                if (rakhi) {
-
-                    rakhi.classList.add(
-                        "tied"
-                    );
-
-                }
-
-
-
-                /* -------------------------------------
-                   Disable button
-                ------------------------------------- */
-
-                tieRakhiButton.disabled =
-                    true;
-
-
-
-                tieRakhiButton.innerHTML =
-                    "Rakhi Tied ❤️";
-
-
-
-                /* -------------------------------------
-                   Celebration
-                ------------------------------------- */
-
-                createConfetti();
-
-
-
-                /* -------------------------------------
-                   Show Manoj message
-                   after Rakhi animation
-                ------------------------------------- */
-
-                setTimeout(
-                    function () {
-
-
-                        showScreen(
-                            "messageScreen"
-                        );
-
-
-
-                        /* -----------------------------
-                           WAIT 5 SECONDS
-                        ----------------------------- */
-
-                        setTimeout(
-                            function () {
-
-
-                                /*
-                                 * Make absolutely sure
-                                 * the image source is set.
-                                 */
-
-                                if (finalPhoto) {
-
-                                    finalPhoto.src =
-                                        "./images/raksha-photo.jpg";
-
-                                }
-
-
-
-                                /*
-                                 * SHOW PHOTO SCREEN
-                                 */
-
-                                showScreen(
-                                    "photoScreen"
-                                );
-
-
-
-                                /*
-                                 * Extra confetti
-                                 */
-
-                                createConfetti();
-
-
-                            },
-                            5000
-                        );
-
-
-                    },
-                    1800
-                );
-
-
-            }
-        );
-
-    }
-
-
-
-    /* =================================================
-       FINAL PHOTO SAFETY
-    ================================================= */
-
-    if (finalPhoto) {
-
-        finalPhoto.src =
-            "./images/raksha-photo.jpg";
-
-
-        finalPhoto.onload =
-            function () {
-
-                console.log(
-                    "Raksha Bandhan photo loaded successfully."
-                );
-
-            };
-
-
-        finalPhoto.onerror =
-            function () {
-
-                console.error(
-                    "Photo not found. Check images/raksha-photo.jpg"
-                );
-
-            };
-
-    }
-
 
 });
